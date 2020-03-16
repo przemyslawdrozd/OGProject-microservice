@@ -1,0 +1,26 @@
+server:
+  port: ${PORT:8011}
+
+spring:
+  application:
+    name: zuul
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8010/eureka
+  instance:
+    instance-id: ${spring.application.name}:${random.uuid}
+
+ribbon:
+  eager-load:
+    enabled: true
+
+zuul:
+  prefix: /api
+  routes:
+    users:
+      path: /users-api/**
+    resources:
+      path: /resources-api/**
+

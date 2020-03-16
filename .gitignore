@@ -1,0 +1,15 @@
+# Default ignored files
+/.idea/
+/OGProject-spring-microservices.iml
+/og-eureka-ws/mvnw
+/og-eureka-ws/mvnw.cmd
+/og-eureka-ws/.mvn/wrapper/
+/og-resources-ws/.mvn/wrapper/
+/og-resources-ws/mvnw
+/og-resources-ws/mvnw.cmd
+/og-users-ws/mvnw.cmd
+/og-users-ws/.mvn/wrapper/
+/og-users-ws/mvnw
+/og-zuul-api-gateway-ws/.mvn/wrapper/
+/og-zuul-api-gateway-ws/mvnw
+/og-zuul-api-gateway-ws/mvnw.cmd
