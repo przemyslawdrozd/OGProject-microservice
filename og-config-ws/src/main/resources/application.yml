@@ -1,0 +1,28 @@
+server:
+  port: 8000
+
+spring:
+  application:
+    name: og-config-ws
+  profiles:
+    active: git, native
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/przemyslawdrozd/OGProjectConfigServer
+          username: username
+          password: password
+          clone-on-start: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+# enable post but url to refresh
+management:
+  endpoints:
+    web:
+      exposure:
+        include: bus-refresh

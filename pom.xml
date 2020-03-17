@@ -36,6 +36,7 @@
         <module>og-zuul-api-gateway-ws</module>
         <module>og-users-ws</module>
         <module>og-resources-ws</module>
+        <module>og-config-ws</module>
     </modules>
 
 </project>
