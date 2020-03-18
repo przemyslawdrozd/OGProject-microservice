@@ -4,6 +4,15 @@ server:
 spring:
   application:
     name: og-users-ws
+  jpa:
+    hibernate:
+      ddl-auto: update
+  datasource:
+      url: jdbc:postgresql://localhost:5432/ogmsdatabase
+      username: postgres
+      password: password
+      hikari:
+        maximum-pool-size: 30
 
 eureka:
   client:
