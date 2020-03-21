@@ -13,14 +13,49 @@ eureka:
     instance-id: ${spring.application.name}:${random.uuid}
 
 ribbon:
+  ReadTimeout: 60000
+  connection-timeout: 3000
+  eureka:
+    enabled: true
   eager-load:
     enabled: true
 
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 30000
+
 zuul:
-  prefix: /api
   routes:
     users:
       path: /users-api/**
     resources:
       path: /resources-api/**
 
+  ignoredServices: '/*'
+  host:
+    time-to-live: -1
+    connect-timeout-millis: 50000
+    max-per-route-connections: 100000
+    max-total-connections: 50000
+    socket-timeout-millis: 600000
+  semaphore:
+    max-semaphores: 500
+
+token:
+  header:
+    name: Authorization
+    prefix: Bearer
+
+url:
+  path:
+    registration: /og-users-ws/users-api
+    login: /og-users-ws/users-api/login
+
+swagger:
+  documentation-url:
+    users: /og-users-ws/v2/api-docs
+    resource: /og-resources-ws/v2/api-docs
