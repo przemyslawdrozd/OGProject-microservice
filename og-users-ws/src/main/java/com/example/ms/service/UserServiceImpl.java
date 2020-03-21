@@ -9,8 +9,13 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.UUID;
 
 @Service
@@ -41,17 +46,35 @@ public class UserServiceImpl implements UserService {
             UserEntity userResponseEntity = userRepository.save(userRequestEntity);
             return modelMapper.map(userResponseEntity, UserResponse.class);
         }
-
+        
         throw new CreateUserException("User exists!");
-    }
-
-    @Override
-    public UserResponse getUserDetailsByEmail(String email) {
-        return null;
     }
 
     @Override
     public UserResponse getUserByUserId(String userId) {
         return null;
+    }
+
+    @Override
+    public UserResponse getUserDetailsByEmail(String email) {
+        LOG.info("getUserDetailsByEmail {} in database", email);
+        UserEntity userEntityResponse = userRepository.findByEmail(email);
+
+        if (userEntityResponse != null){
+            return new ModelMapper().map(userEntityResponse, UserResponse.class);
+        }
+        throw new UsernameNotFoundException(email);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        LOG.info("loadUserByUsername: {} in database", email);
+        UserEntity userEntity = userRepository.findByEmail(email);
+
+        if (userEntity != null){
+            return new User(userEntity.getEmail(), userEntity.getEncryptedPassword(),
+                    true, true, true, true, new ArrayList<>());
+        }
+        throw new UsernameNotFoundException(email);
     }
 }
