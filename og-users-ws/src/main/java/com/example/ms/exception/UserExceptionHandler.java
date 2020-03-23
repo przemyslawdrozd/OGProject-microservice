@@ -19,14 +19,16 @@ public class UserExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers,
                                                                   HttpStatus status, WebRequest request) {
-        LOG.error(ex.getMessage());
-        return ResponseEntity.status(status).body(new ErrorMessage(new Date(), "Invalid user data"));
+        ErrorMessage errorMessage = new ErrorMessage(new Date(), "Invalid user data");
+        LOG.error("Error message: {}", errorMessage.getMessage());
+        return ResponseEntity.status(status).body(errorMessage);
     }
 
     @ExceptionHandler(CreateUserException.class)
     public ResponseEntity<Object> handleItemNotFoundException(CreateUserException ex) {
+
         ErrorMessage errorMessage = new ErrorMessage(new Date(), ex.getMessage());
-        LOG.error("User: {} exists!", errorMessage.getMessage());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        LOG.error("Error message: {}", errorMessage.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
     }
 }

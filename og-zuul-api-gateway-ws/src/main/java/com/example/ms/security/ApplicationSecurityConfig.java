@@ -39,7 +39,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                     .addFilter(new MyAuthorizationFilter(authenticationManager(), env))
                 .authorizeRequests()
 
-                // enable  for swagger-ui documentation
+                // enable for swagger-ui documentation
                 .antMatchers(env.getProperty("swagger.documentation-url.users")).permitAll()
                 .antMatchers(env.getProperty("swagger.documentation-url.resource")).permitAll()
 
