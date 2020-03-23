@@ -13,6 +13,8 @@ spring:
       password: password
       hikari:
         maximum-pool-size: 30
+  profiles:
+    active: dev
 
 eureka:
   client:
