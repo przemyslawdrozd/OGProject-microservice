@@ -5,6 +5,7 @@ import com.example.ms.model.UserEntity;
 import com.example.ms.model.UserRequest;
 import com.example.ms.model.UserResponse;
 import com.example.ms.repository.UserRepository;
+import com.example.ms.shared.ResourcesServiceClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,6 +35,12 @@ public class UserServiceImplTest {
 
     @Mock
     private PasswordEncoder passwordEncoder;
+
+    @Mock
+    private ResourcesServiceClient resourcesServiceClient;
+
+    @Mock
+    private Environment env;
 
     @Mock
     private UserEntity userEntity;
@@ -63,7 +71,6 @@ public class UserServiceImplTest {
 
         when(userRepository.existsByEmail(any())).thenReturn(false);
         when(userRepository.save(any(UserEntity.class))).thenReturn(userEntity);
-
         UserResponse actualUser = userService.createUser(userRequest);
 
         assertEquals(expectedUser.getUserId(), actualUser.getUserId());

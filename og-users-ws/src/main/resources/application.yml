@@ -30,3 +30,7 @@ token:
   expirationDays: 5
   jwt:
     secretKey: mays932rj023rf09342jr903h97g867g7B789g678bv78B8b87b786B78bmays932rj023rf09342jr903h97g867g7B789g678bv78B8b87b786B78bmays932rj023rf09342jr903h97g867g7B789g
+
+feign:
+  hystrix:
+    enabled: true
