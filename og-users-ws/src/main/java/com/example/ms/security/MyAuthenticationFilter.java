@@ -63,7 +63,7 @@ public class MyAuthenticationFilter extends UsernamePasswordAuthenticationFilter
                                             FilterChain chain, Authentication authResult)
             throws IOException, ServletException {
 
-        String userEmail = ((User)authResult.getPrincipal()).getUsername();
+        String userEmail = ((User) authResult.getPrincipal()).getUsername();
         LOG.info("Successful auth called: {}", userEmail);
 
         UserResponse userResponse = userService.getUserDetailsByEmail(userEmail);
@@ -78,5 +78,11 @@ public class MyAuthenticationFilter extends UsernamePasswordAuthenticationFilter
         LOG.info("Token generated: {}", token);
         response.addHeader("token", token);
         response.addHeader("userId", userResponse.getUserId());
+    }
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        LOG.error("Authentication Failure: Invalid email of password");
+        super.unsuccessfulAuthentication(request, response, failed);
     }
 }

@@ -2,7 +2,6 @@ package com.example.ms.service;
 
 import com.example.ms.exeptions.ResourcesNotFoundException;
 import com.example.ms.factory.ResourcesFactory;
-import com.example.ms.model.ResourcesEntity;
 import com.example.ms.model.ResourcesResponse;
 import com.example.ms.repository.ResourcesRepository;
 import org.modelmapper.ModelMapper;
@@ -36,7 +35,7 @@ public class ResourcesServiceImpl implements ResourcesServices {
     public ResourcesResponse getResourceByUserId(String userId) {
 
         return resourcesRepository.findByUserId(userId)
-                .map(resourcesEntity ->  modelMapper.map(resourcesEntity, ResourcesResponse.class))
+                .map(resourcesEntity -> modelMapper.map(resourcesEntity, ResourcesResponse.class))
                 .orElseThrow(() -> new ResourcesNotFoundException("Resources not found - Invalid UserId"));
     }
 }
