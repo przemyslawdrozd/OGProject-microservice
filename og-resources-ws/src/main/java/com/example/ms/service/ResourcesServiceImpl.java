@@ -4,12 +4,14 @@ import com.example.ms.exeptions.ResourcesNotFoundException;
 import com.example.ms.factory.ResourcesFactory;
 import com.example.ms.model.ResourcesResponse;
 import com.example.ms.repository.ResourcesRepository;
+import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Log4j2
 @Service
 public class ResourcesServiceImpl implements ResourcesServices {
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
@@ -37,5 +39,16 @@ public class ResourcesServiceImpl implements ResourcesServices {
         return resourcesRepository.findByUserId(userId)
                 .map(resourcesEntity -> modelMapper.map(resourcesEntity, ResourcesResponse.class))
                 .orElseThrow(() -> new ResourcesNotFoundException("Resources not found - Invalid UserId"));
+    }
+
+    @Override
+    public void updateResources(ResourcesResponse resources, String userId) {
+
+        log.info("Resources to update: {}", resources);
+        resourcesRepository.updateResourcesByUserId(
+                resources.getMetal(),
+                resources.getCrystal(),
+                resources.getDeuterium(),
+                userId);
     }
 }

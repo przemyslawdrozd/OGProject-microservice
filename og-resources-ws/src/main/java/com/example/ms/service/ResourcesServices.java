@@ -7,4 +7,6 @@ public interface ResourcesServices {
     void createResources(String userId);
 
     ResourcesResponse getResourceByUserId(String userId);
+
+    void updateResources(ResourcesResponse resources, String userId);
 }

@@ -1,15 +1,12 @@
 package com.example.ms.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "resources")
-@NoArgsConstructor
-@Getter @Setter
+@Data
 public class ResourcesEntity {
 
     @Id

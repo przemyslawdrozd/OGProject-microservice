@@ -9,12 +9,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(name = "og-resources-ws", fallbackFactory = ResourcesFallBackFactory.class)
 public interface ResourcesServiceClient {
 
     @GetMapping("/resources-api/{userId}")
     ResponseEntity<ResourcesResponse> getResourcesByUserId(@PathVariable("userId") String userId);
+
+    @PutMapping("/resources-api/{userId}/{create-resources-key}")
+    ResponseEntity<String> updateResources(@PathVariable("userId") String userId,
+                                           @PathVariable("create-resources-key") String createResourcesKey,
+                                           @RequestBody ResourcesResponse resources);
 }
 
 @Component
@@ -39,5 +46,11 @@ class ResourcesServiceClientCallback implements ResourcesServiceClient {
     public ResponseEntity<ResourcesResponse> getResourcesByUserId(String userId) {
         log.error("Error when called: createResources \n{}", throwable.getLocalizedMessage());
         throw new ResourcesNotFoundException("Resources not found! wrong userId ?");
+    }
+
+    @Override
+    public ResponseEntity<String> updateResources(String userId, String createResourcesKey, ResourcesResponse resources) {
+        log.error("Error when called: updateResources \n{}", throwable.getLocalizedMessage());
+        throw new ResourcesNotFoundException("Resources not found! wrong userId or key ?");
     }
 }

@@ -9,4 +9,6 @@ public interface FacilitiesService {
     void createFacilities(String userId);
 
     List<BuildingResponse> getBuildings(String userId);
+
+    String levelUp(String userId, String name);
 }
