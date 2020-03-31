@@ -12,3 +12,7 @@ eureka:
 feign:
   hystrix:
     enabled: true
+
+rate:
+  buildTime: 2
+  neededResources: 2

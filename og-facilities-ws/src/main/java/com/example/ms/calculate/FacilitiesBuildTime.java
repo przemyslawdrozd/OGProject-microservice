@@ -2,25 +2,45 @@ package com.example.ms.calculate;
 
 import com.example.ms.exception.buildings.BuildingNotFoundException;
 import com.example.ms.model.BuildingDto;
+import org.apache.commons.lang.time.DurationFormatUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 @Component
 public class FacilitiesBuildTime {
+
+    @Value("${rate.buildTime}")
+    private int buildTimeRate;
 
     public BuildingDto setBuildTime(BuildingDto building) {
         return building.getLevel() == 0 ? defaultBuildTime(building) : calculateBuildTime(building);
     }
 
-    private BuildingDto calculateBuildTime(BuildingDto building) {
+    private BuildingDto calculateBuildTime(BuildingDto buildingDto) {
 
-        // TODO coming soon
-            // calculate build time + 30 % time
-            building.getBuildTime(); // null
-            building.getLevel();
+        BuildingDto building = defaultBuildTime(buildingDto);
+        String buildTime = building.getBuildTime();
 
-            // set new buildTime
-    //        building.setBuildTime();
-        return null;
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+        format.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        try {
+            Date date = format.parse(buildTime);
+            long newTime = (date.getTime() * buildTimeRate);
+
+            String newBuildTime = DurationFormatUtils.formatDurationHMS(newTime).replace(".000", "");
+            building.setBuildTime(newBuildTime);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return building;
     }
 
     private BuildingDto defaultBuildTime(BuildingDto building) {
