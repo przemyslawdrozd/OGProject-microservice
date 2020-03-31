@@ -1,15 +1,8 @@
 package com.example.ms.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-import java.util.Date;
-
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter @Setter
+@Data
 public class BuildingResponse {
 
     private String name;
@@ -24,7 +17,7 @@ public class BuildingResponse {
 
     private String buildTime;
 
-    private Date howLongToBuild;
+    private String howLongToBuild;
 
     private String buildState;
 }

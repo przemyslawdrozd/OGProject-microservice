@@ -1,33 +1,32 @@
 package com.example.ms.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.io.Serializable;
-import java.util.Date;
+import lombok.Data;
 
+import javax.persistence.*;
+import javax.validation.constraints.Min;
+import java.io.Serializable;
+
+@Data
 @Entity
 @Table(name = "buildings")
-@NoArgsConstructor
-@Getter
-@Setter
 public class BuildingEntity implements Serializable {
 
     @Id
     @GeneratedValue
     private Long id;
 
+    @Column(nullable = false)
     private String userId;
 
+    @Column(nullable = false)
     private String name;
 
+    @Min(value = 0)
+    @Column(nullable = false)
     private int level;
 
-    private Date howLongToBuild;
-
+    @Column(nullable = false)
     private String buildState;
+
+    private String howLongToBuild;
 }

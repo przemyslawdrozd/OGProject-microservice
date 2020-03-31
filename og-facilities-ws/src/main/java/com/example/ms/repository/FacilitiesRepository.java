@@ -21,4 +21,6 @@ public interface FacilitiesRepository extends JpaRepository<BuildingEntity, Long
     @Transactional @Modifying
     @Query("UPDATE BuildingEntity b SET b.buildState = 'FREEZE' WHERE b.buildState = 'READY' AND b.userId = :userId")
     void updateBuildStateAsFreezeByUserId(@Param("userId") String userId);
+
+    List<BuildingEntity> findAllByBuildState(String buildState);
 }
