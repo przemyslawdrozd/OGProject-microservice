@@ -42,6 +42,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 // enable for swagger-ui documentation
                 .antMatchers(env.getProperty("swagger.documentation-url.users")).permitAll()
                 .antMatchers(env.getProperty("swagger.documentation-url.resource")).permitAll()
+                .antMatchers(env.getProperty("swagger.documentation-url.facilities")).permitAll()
 
                 .antMatchers(HttpMethod.POST, env.getProperty("url.path.registration")).permitAll()
                 .antMatchers(HttpMethod.POST, env.getProperty("url.path.login")).permitAll()

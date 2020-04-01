@@ -24,7 +24,8 @@ public class DocumentationController implements SwaggerResourcesProvider {
     public List<SwaggerResource> get() {
         return Arrays.asList(
                 swaggerResource("users", env.getProperty("swagger.documentation-url.users")),
-                swaggerResource("resources", env.getProperty("swagger.documentation-url.resource")));
+                swaggerResource("resources", env.getProperty("swagger.documentation-url.resource")),
+                swaggerResource("facilities", env.getProperty("swagger.documentation-url.facilities")));
     }
 
     private SwaggerResource swaggerResource(String name, String location) {

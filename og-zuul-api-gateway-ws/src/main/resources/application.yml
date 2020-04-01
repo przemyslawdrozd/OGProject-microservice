@@ -34,6 +34,8 @@ zuul:
       path: /users-api/**
     resources:
       path: /resources-api/**
+    facilities:
+      path: /facilities-api/**
 
   ignoredServices: '/*'
   host:
@@ -59,3 +61,4 @@ swagger:
   documentation-url:
     users: /og-users-ws/v2/api-docs
     resource: /og-resources-ws/v2/api-docs
+    facilities: /og-facilities-ws/v2/api-docs

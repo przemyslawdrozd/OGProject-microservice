@@ -8,7 +8,5 @@ public interface UserService extends UserDetailsService {
 
     UserResponse createUser(UserRequest userRequest);
 
-    UserResponse getUserByUserId(String userId);
-
     UserResponse getUserDetailsByEmail(String email);
 }
