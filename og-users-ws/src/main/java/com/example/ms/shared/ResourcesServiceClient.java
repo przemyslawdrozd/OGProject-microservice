@@ -14,7 +14,7 @@ public interface ResourcesServiceClient {
 
     @PostMapping("/resources-api/{userId}/{create-resources-key}")
     ResponseEntity<String> createResources(@PathVariable("userId") String userId,
-                         @PathVariable("create-resources-key") String createResourcesKey);
+                                           @PathVariable("create-resources-key") String createResourcesKey);
 }
 
 @Component

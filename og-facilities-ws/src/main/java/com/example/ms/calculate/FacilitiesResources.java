@@ -2,23 +2,26 @@ package com.example.ms.calculate;
 
 import com.example.ms.exception.buildings.BuildingNotFoundException;
 import com.example.ms.model.BuildingDto;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class FacilitiesResources {
 
+    @Value("${rate.neededResources}")
+    private int neededResourcesRate;
+
     public BuildingDto setBuildingResources(BuildingDto building) {
         return building.getLevel() == 0 ? defaultResources(building) : calculateResources(building);
     }
 
-    private BuildingDto calculateResources(BuildingDto building) {
+    private BuildingDto calculateResources(BuildingDto buildingDto) {
 
-        int lvl = building.getLevel();
-        double rate = 1.25;
+        BuildingDto building = defaultResources(buildingDto);
 
-        int metalNextLevel = (int) (building.getMetal() * lvl * rate);
-        int crystalNextLevel = (int) (building.getMetal() * lvl * rate);
-        int deuteriumNextLevel = (int) (building.getMetal() * lvl * rate);
+        int metalNextLevel = building.getMetal()  * neededResourcesRate;
+        int crystalNextLevel = building.getCrystal() *  neededResourcesRate;
+        int deuteriumNextLevel = building.getDeuterium() * neededResourcesRate;
 
         building.setMetal(metalNextLevel);
         building.setCrystal(crystalNextLevel);

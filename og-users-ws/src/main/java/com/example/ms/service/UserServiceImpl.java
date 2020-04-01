@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,18 +28,16 @@ public class UserServiceImpl implements UserService {
     @Value("${service.key.create-resources}")
     private String createValidationKey;
 
-    private final Environment env;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ResourcesServiceClient resourcesServiceClient;
     private final FacilitiesServiceClient facilitiesServiceClient;
 
     @Autowired
-    public UserServiceImpl(Environment env, UserRepository userRepository,
+    public UserServiceImpl(UserRepository userRepository,
                            PasswordEncoder passwordEncoder,
                            ResourcesServiceClient resourcesServiceClient,
                            FacilitiesServiceClient facilitiesServiceClient) {
-        this.env = env;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.resourcesServiceClient = resourcesServiceClient;

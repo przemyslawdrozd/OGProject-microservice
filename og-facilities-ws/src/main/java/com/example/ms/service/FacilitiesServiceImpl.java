@@ -1,6 +1,7 @@
 package com.example.ms.service;
 
 import com.example.ms.calculate.FacilitiesConfiguration;
+import com.example.ms.calculate.IFacilitiesConfiguration;
 import com.example.ms.exception.buildings.BuildingException;
 import com.example.ms.exception.buildings.BuildingNotFoundException;
 import com.example.ms.factory.BuildState;
@@ -25,16 +26,16 @@ public class FacilitiesServiceImpl implements FacilitiesService {
     private String createValidationKey;
 
     private final FacilitiesRepository facilitiesRepository;
-    private final FacilitiesConfiguration facilitiesConfiguration;
     private final ResourcesServiceClient resourcesServiceClient;
+    private final IFacilitiesConfiguration configuration;
 
     @Autowired
     public FacilitiesServiceImpl(FacilitiesRepository facilitiesRepository,
                                  ResourcesServiceClient resourcesServiceClient,
-                                 FacilitiesConfiguration facilitiesConfiguration) {
+                                 IFacilitiesConfiguration configuration) {
         this.facilitiesRepository = facilitiesRepository;
         this.resourcesServiceClient = resourcesServiceClient;
-        this.facilitiesConfiguration = facilitiesConfiguration;
+        this.configuration = configuration;
     }
 
     @Override
@@ -48,8 +49,7 @@ public class FacilitiesServiceImpl implements FacilitiesService {
 
         return facilitiesRepository.findAllByUserId(userId)
                 .stream()
-                .map(facilitiesConfiguration::getSettleBuildingDto)
-                .map(facilitiesConfiguration::getBuildingResponse)
+                .map(configuration::configBuildingResponse)
                 .collect(Collectors.toList());
     }
 
@@ -57,7 +57,7 @@ public class FacilitiesServiceImpl implements FacilitiesService {
     public String levelUp(String userId, String name) {
 
         BuildingDto buildingDto = facilitiesRepository.findByUserIdAndName(userId, name)
-                .map(facilitiesConfiguration::getSettleBuildingDto)
+                .map(configuration::configBuilding)
                 .orElseThrow(() -> new BuildingNotFoundException("building " + name + " is not found!"));
 
         if (!BuildState.READY.equals(buildingDto.getBuildState())) {
@@ -68,13 +68,13 @@ public class FacilitiesServiceImpl implements FacilitiesService {
         ResourcesResponse resources = resourcesServiceClient.getResourcesByUserId(userId).getBody();
 
         resourcesServiceClient.updateResources(userId, createValidationKey,
-                facilitiesConfiguration.retrieveResources(buildingDto, resources));
+                configuration.retrieveResources(buildingDto, resources));
 
         buildingDto.setBuildState("PROGRESS");
         buildingDto.setHowLongToBuild(buildingDto.getBuildTime());
 
         facilitiesRepository.updateBuildStateAsFreezeByUserId(userId);
-        facilitiesRepository.save(facilitiesConfiguration.getBuildingEntity(buildingDto));
+        facilitiesRepository.save(configuration.getBuildingEntity(buildingDto));
         return name + " started to build!";
     }
 }

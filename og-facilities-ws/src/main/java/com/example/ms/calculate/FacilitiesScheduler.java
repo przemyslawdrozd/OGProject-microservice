@@ -7,9 +7,9 @@ import org.apache.commons.lang.time.DurationFormatUtils;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.TimeZone;
 
 import static com.example.ms.factory.BuildState.*;
@@ -29,18 +29,20 @@ public class FacilitiesScheduler {
     @Scheduled(fixedDelay = SECOND)
     public void building() {
 
-        List<BuildingEntity> progressFacilities = facilitiesRepository.findAllByBuildState(PROGRESS);
-        for (BuildingEntity entity: progressFacilities) {
 
-            String newTime = countDownOneSecond(entity.getHowLongToBuild());
-            if (newTime != null) {
+        facilitiesRepository.findAllByBuildState(PROGRESS)
+                .forEach(entity -> {
 
-                entity.setHowLongToBuild(newTime);
-                facilitiesRepository.save(entity);
-                continue;
-            }
-            makeLevelUp(entity);
-        }
+                    String newTime = countDownOneSecond(entity.getHowLongToBuild());
+
+                    if (newTime != null) {
+
+                        entity.setHowLongToBuild(newTime);
+                        facilitiesRepository.save(entity);
+                    } else {
+                        makeLevelUp(entity);
+                    }
+                });
     }
 
     private String countDownOneSecond(String howLongToBuild) {
