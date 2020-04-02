@@ -27,4 +27,8 @@ public interface FacilitiesRepository extends JpaRepository<BuildingEntity, Long
     void updateBuildStateAsReadyByUserId(@Param("userId") String userId);
 
     List<BuildingEntity> findAllByBuildState(String buildState);
+
+    @Transactional @Modifying
+    @Query("SELECT b FROM BuildingEntity b WHERE (b.name = 'metal' OR b.name = 'crystal' OR b.name = 'deuterium') AND b.userId = :userId")
+    List<BuildingEntity> findAllMineByUserId(@Param("userId") String userId);
 }

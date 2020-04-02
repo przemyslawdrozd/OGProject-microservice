@@ -1,7 +1,9 @@
 package com.example.ms.api;
 
 import com.example.ms.exception.buildings.CreateFacilitiesException;
+import com.example.ms.exception.buildings.FacilitiesException;
 import com.example.ms.model.BuildingResponse;
+import com.example.ms.model.MineBuildingResponse;
 import com.example.ms.service.FacilitiesService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,5 +55,18 @@ public class FacilitiesController {
 
         log.info("Try to level up: {}", name);
         return ResponseEntity.status(HttpStatus.OK).body(facilitiesService.levelUp(userId, name));
+    }
+
+    @GetMapping("/levels/{userId}/{create-facilities-key}")
+    public ResponseEntity<List<MineBuildingResponse>> getFacilitiesLevels(@PathVariable("userId") String userId,
+                                                  @PathVariable("create-facilities-key") String createFacilitiesKey) {
+
+        log.trace("Facilities retrieving for update resources");
+
+        if (this.createFacilitiesKey.equals(createFacilitiesKey)) {
+            return ResponseEntity.status(HttpStatus.OK).body(facilitiesService.getMineBuildings(userId));
+        }
+        log.error("Wrong valid key");
+        throw new FacilitiesException("Invalid key");
     }
 }
