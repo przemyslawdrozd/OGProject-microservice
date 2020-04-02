@@ -17,4 +17,11 @@ public class ResourcesExceptionHandler extends ResponseEntityExceptionHandler {
         logger.error("Error message: " + errorMessage.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
     }
+
+    @ExceptionHandler(FacilitiesNotFoundException.class)
+    public ResponseEntity<Object> handleFacilitiesException(FacilitiesNotFoundException e) {
+
+        logger.error(e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    }
 }

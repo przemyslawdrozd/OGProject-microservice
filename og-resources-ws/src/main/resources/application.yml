@@ -11,3 +11,6 @@ eureka:
       defaultZone: http://localhost:8010/eureka
   instance:
     instance-id: ${spring.application.name}:${random.uuid}
+
+rate:
+  resourceIncreaseRate: 1

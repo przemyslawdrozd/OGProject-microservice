@@ -1,6 +1,5 @@
 package com.example.ms.service;
 
-import com.example.ms.calculate.FacilitiesConfiguration;
 import com.example.ms.calculate.IFacilitiesConfiguration;
 import com.example.ms.exception.buildings.BuildingException;
 import com.example.ms.exception.buildings.BuildingNotFoundException;
@@ -9,9 +8,11 @@ import com.example.ms.factory.FacilitiesFactory;
 import com.example.ms.feignClient.ResourcesServiceClient;
 import com.example.ms.model.BuildingDto;
 import com.example.ms.model.BuildingResponse;
+import com.example.ms.model.MineBuildingResponse;
 import com.example.ms.model.resources.ResourcesResponse;
 import com.example.ms.repository.FacilitiesRepository;
 import lombok.extern.log4j.Log4j2;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -76,5 +77,14 @@ public class FacilitiesServiceImpl implements FacilitiesService {
         facilitiesRepository.updateBuildStateAsFreezeByUserId(userId);
         facilitiesRepository.save(configuration.getBuildingEntity(buildingDto));
         return name + " started to build!";
+    }
+
+    @Override
+    public List<MineBuildingResponse> getMineBuildings(String userId) {
+
+        return facilitiesRepository.findAllMineByUserId(userId)
+                .stream()
+                .map(b -> new ModelMapper().map(b, MineBuildingResponse.class))
+                .collect(Collectors.toList());
     }
 }
