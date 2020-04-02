@@ -62,3 +62,4 @@ swagger:
     users: /og-users-ws/v2/api-docs
     resource: /og-resources-ws/v2/api-docs
     facilities: /og-facilities-ws/v2/api-docs
+    researches: /og-researches-ws/v2/api-docs
