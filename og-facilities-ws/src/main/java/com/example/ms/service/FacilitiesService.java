@@ -14,4 +14,6 @@ public interface FacilitiesService {
     String levelUp(String userId, String name);
 
     List<MineBuildingResponse> getMineBuildings(String userId);
+
+    int getResearchBuildingLvl(String userId);
 }

@@ -7,6 +7,7 @@ import com.example.ms.factory.BuildState;
 import com.example.ms.factory.FacilitiesFactory;
 import com.example.ms.feignClient.ResourcesServiceClient;
 import com.example.ms.model.BuildingDto;
+import com.example.ms.model.BuildingEntity;
 import com.example.ms.model.BuildingResponse;
 import com.example.ms.model.MineBuildingResponse;
 import com.example.ms.model.resources.ResourcesResponse;
@@ -86,5 +87,12 @@ public class FacilitiesServiceImpl implements FacilitiesService {
                 .stream()
                 .map(b -> new ModelMapper().map(b, MineBuildingResponse.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public int getResearchBuildingLvl(String userId) {
+        return facilitiesRepository.findByUserIdAndName(userId, "research")
+                .map(BuildingEntity::getLevel)
+                .orElseThrow(() -> new BuildingNotFoundException("Building research not found - invalid user id ?"));
     }
 }

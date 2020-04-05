@@ -27,4 +27,9 @@ public interface ResearchesRepository extends JpaRepository<TechnologyEntity, Lo
     @Transactional @Modifying
     @Query("UPDATE TechnologyEntity t SET t.buildState = 'READY' WHERE t.buildState = 'FREEZE' AND t.userId = :userId")
     void updateTechStateAsReadyByUserId(@Param("userId") String userId);
+
+    @Transactional @Modifying
+    @Query("UPDATE TechnologyEntity t SET t.buildState = 'READY' WHERE t.name = :name AND t.userId = :userId")
+    void updateUnlockTech(@Param("userId") String userId,
+                          @Param("name") String name);
 }

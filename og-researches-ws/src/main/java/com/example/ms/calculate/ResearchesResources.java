@@ -1,35 +1,52 @@
 package com.example.ms.calculate;
 
 import com.example.ms.exception.technology.TechNotFoundException;
-
+import com.example.ms.factory.BuildState;
 import com.example.ms.model.TechnologyDto;
+import com.example.ms.repository.ResearchesRepository;
+import com.example.ms.shared.FacilitiesServiceClient;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import static com.example.ms.factory.TechName.*;
 
+@Log4j2
 @Component
 public class ResearchesResources {
 
     @Value("${rate.neededResources}")
     private int neededResourcesRate;
 
-    public TechnologyDto setTechResources(TechnologyDto tech) {
-        TechnologyDto technologyDto = tech.getLevel() == 0 ? defaultResources(tech) : calculateResources(tech);
+    private final FacilitiesServiceClient facilitiesServiceClient;
+    private final ResearchesRepository researchesRepository;
 
+    public ResearchesResources(FacilitiesServiceClient facilitiesServiceClient,
+                               ResearchesRepository researchesRepository) {
+        this.facilitiesServiceClient = facilitiesServiceClient;
+        this.researchesRepository = researchesRepository;
+    }
+
+    public TechnologyDto setTechResources(TechnologyDto tech) {
+
+        TechnologyDto technologyDto = tech.getLevel() == 0 ? defaultResources(tech) : calculateResources(tech);
         return upgradeTech(technologyDto);
     }
 
     private TechnologyDto upgradeTech(TechnologyDto tech) {
 
-        // TODO facilities service client
-        // lab lvl == 1 : set unblock ENERGY, LASER, COMP
-        if (false) {
+        Integer researchBuildLvl = facilitiesServiceClient.getResearchLvl(tech.getUserId()).getBody();
 
+        log.info("try to unlock tech - research: {}", researchBuildLvl);
+        if (tech.getBuildState().equals(BuildState.BLOCK) && researchBuildLvl > 1 &&
+           (tech.getName().equals("energy") || tech.getName().equals("laser") || tech.getName().equals("comp"))) {
+
+            log.info("Unlock: {}", tech.getName());
+            tech.setBuildState(BuildState.READY);
+            researchesRepository.updateUnlockTech(tech.getUserId(), tech.getName());
         }
 
         return tech;
-
     }
 
     private TechnologyDto calculateResources(TechnologyDto technologyDto) {

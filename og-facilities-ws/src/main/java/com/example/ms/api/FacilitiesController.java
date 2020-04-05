@@ -69,4 +69,12 @@ public class FacilitiesController {
         log.error("Wrong valid key");
         throw new FacilitiesException("Invalid key");
     }
+
+    @GetMapping("/research/{userId}")
+    public ResponseEntity<Integer> getResearchLvl(@PathVariable("userId") String userId) {
+
+        log.info("User: {} try to get research building lvl", userId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(facilitiesService.getResearchBuildingLvl(userId));
+    }
 }
