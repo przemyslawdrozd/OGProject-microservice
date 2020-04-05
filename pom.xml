@@ -38,6 +38,7 @@
         <module>og-resources-ws</module>
         <module>og-config-ws</module>
         <module>og-facilities-ws</module>
+        <module>og-researches-ws</module>
     </modules>
 
 </project>

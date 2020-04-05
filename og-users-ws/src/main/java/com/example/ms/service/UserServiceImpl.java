@@ -6,6 +6,7 @@ import com.example.ms.model.UserRequest;
 import com.example.ms.model.UserResponse;
 import com.example.ms.repository.UserRepository;
 import com.example.ms.shared.FacilitiesServiceClient;
+import com.example.ms.shared.ResearchesServiceClient;
 import com.example.ms.shared.ResourcesServiceClient;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -32,16 +33,20 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final ResourcesServiceClient resourcesServiceClient;
     private final FacilitiesServiceClient facilitiesServiceClient;
+    private final ResearchesServiceClient researchesServiceClient;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
                            PasswordEncoder passwordEncoder,
                            ResourcesServiceClient resourcesServiceClient,
-                           FacilitiesServiceClient facilitiesServiceClient) {
+                           FacilitiesServiceClient facilitiesServiceClient,
+                           ResearchesServiceClient researchesServiceClient
+    ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.resourcesServiceClient = resourcesServiceClient;
         this.facilitiesServiceClient = facilitiesServiceClient;
+        this.researchesServiceClient = researchesServiceClient;
     }
 
     @Override
@@ -60,6 +65,7 @@ public class UserServiceImpl implements UserService {
 
             facilitiesServiceClient.createFacilities(userId, createValidationKey);
             resourcesServiceClient.createResources(userId, createValidationKey);
+            researchesServiceClient.createResearches(userId, createValidationKey);
 
             UserEntity userResponseEntity = userRepository.save(userRequestEntity);
             return modelMapper.map(userResponseEntity, UserResponse.class);
